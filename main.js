@@ -1,66 +1,71 @@
 
+const BASE_URL = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies";
 
-const dropList = document.querySelectorAll("form select") ,
-fromCurrency = document.querySelector(".from select"),
-toCurrency = document.querySelector(".to select"),
-getButton = document.querySelector("form button");
+let dropdownSelects = document.querySelectorAll("select");
+let btn = document.querySelector("button");
+let fromCurr = document.querySelector(".from select");
+let toCurr = document.querySelector(".to select");
+let msg = document.querySelector(".msg");
 
-for (let i = 0; i < dropList.length; i++) {
-    for(let currency_code in country_list){
-        let selected = i == 0 ? currency_code == "USD" ? "selected" : "" : currency_code == "NPR" ? "selected" : "";
-        let optionTag = `<option value="${currency_code}" ${selected}>${currency_code}</option>`;
-        dropList[i].insertAdjacentHTML("beforeend", optionTag);
-    }
-    dropList[i].addEventListener("change", e =>{
-        loadFlag(e.target);
-    });
-}
 
-function loadFlag(element){
-    for(let code in country_list){
-        if(code == element.value){
-            let imgTag = element.parentElement.querySelector("img");
-            imgTag.src = `https://flagcdn.com/48x36/${country_list[code].toLowerCase()}.png`;
+for(let select of dropdownSelects){
+    for (currCode in countryList){
+        let newOption = document.createElement("option");
+        newOption.innerText = currCode;
+        newOption.value = currCode;
+        if(select.name === "from" && currCode === "USD"){
+            newOption.selected = "selected";
+        } else if(select.name === "to" && currCode === "PKR"){
+            newOption.selected = "selected";
         }
+        select.append(newOption);
     }
+    select.addEventListener("change", (event) =>{
+        updateFlag(event.target);
+    })
 }
 
-window.addEventListener("load", ()=>{
-    getExchangeRate();
-});
+const updateFlag = (element) => {
+    let currCode = element.value;
+    let countryCode = countryList[currCode];
+    let newSrc = `https://flagsapi.com/${countryCode}/flat/64.png`;
+    let img = element.parentElement.querySelector("img");
+    img.src = newSrc;
+}
 
-getButton.addEventListener("click", e =>{
-    e.preventDefault();
-    getExchangeRate();
-});
+const UpadateExchageRate = async () => {
+    let amount = document.querySelector("input");
+    let amtVal = amount.value;
+    if(amtVal === "" || amtVal < 1){
+        amtVal = 1;
+        amount.value = "1";
+    }
 
-const exchangeIcon = document.querySelector("form .icon");
-exchangeIcon.addEventListener("click", ()=>{
-    let tempCode = fromCurrency.value;
-    fromCurrency.value = toCurrency.value;
-    toCurrency.value = tempCode;
-    loadFlag(fromCurrency);
-    loadFlag(toCurrency);
-    getExchangeRate();
+    const url = `${BASE_URL}/${fromCurr.value.toLowerCase()}.json`;
+    // console.log(url);
+
+    let response= await fetch(url);
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    
+    let data = await response.json();
+    // console.log(data);
+
+    const exchangeRate = data[fromCurr.value.toLowerCase()][toCurr.value.toLowerCase()]; // Extract exchange rate
+    console.log(`${fromCurr.value} to ${toCurr.value}`, "Exchange Rate is:", exchangeRate); // Exchange Rate will be printed on console
+
+    let finalAmount = amtVal * exchangeRate;
+    msg.innerText = `${amtVal} ${fromCurr.value} = ${finalAmount} ${toCurr.value}`;
+}
+
+btn.addEventListener("click", async (event) =>{
+    event.preventDefault();
+    UpadateExchageRate();
 })
 
-function getExchangeRate(){
-    const amount = document.querySelector("form input");
-    const exchangeRateTxt = document.querySelector("form .exchange-rate");
-    let amountVal = amount.value;
-    if(amountVal == "" || amountVal == "0"){
-        amount.value = "1";
-        amountVal = 1;
-    }   
-    exchangeRateTxt.innerText = "Getting exchange rate...";
-    const apiKey = "6173c67b916b4e44b7ba745b9d9e4c9b";  // Your actual API key here
-    let url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/${fromCurrency.value}`;
-    fetch(url).then(response => response.json()).then(result =>{
-        let exchangeRate = result.conversion_rates[toCurrency.value];
-        let totalExRate = (amountVal * exchangeRate).toFixed(2);
-        exchangeRateTxt.innerText = `${amountVal} ${fromCurrency.value} = ${totalExRate} ${toCurrency.value}`;
-    }).catch(() =>{
-        exchangeRateTxt.innerText = "Something went wrong";
-    });
-}
+window.addEventListener("load", () =>{
+    UpadateExchageRate();
+})
+
 

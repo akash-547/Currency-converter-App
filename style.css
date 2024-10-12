@@ -1,110 +1,90 @@
-/* Import Google Font - Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 *{
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins';
 }
+
 body{
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   min-height: 100vh;
-  padding: 0 10px;
-  background: #675AFE;
+  background-color: #053963;
 }
-::selection{
-  color: #fff;
-  background: #675AFE;
+
+.container{
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 1rem;
+  min-height: 45vh;
+  width: 48vh;
 }
-.wrapper{
-  width: 370px;
-  padding: 30px;
-  border-radius: 7px;
-  background: #fff;
-  box-shadow: 7px 7px 20px rgba(0, 0, 0, 0.05);
+
+form{
+  margin: 2rem 0 1rem 0;
 }
-.wrapper header{
-  font-size: 28px;
-  font-weight: 500;
-  text-align: center;
-}
-.wrapper form{
-  margin: 40px 0 20px 0;
-}
-form :where(input, select, button){
+
+form select, button, input{
   width: 100%;
-  outline: none;
-  border-radius: 5px;
   border: none;
+  outline: none;
+  border-radius: 0.75rem;
 }
-form p{
-  font-size: 18px;
-  margin-bottom: 5px;
-}
+
 form input{
-  height: 50px;
-  font-size: 17px;
-  padding: 0 15px;
-  border: 1px solid #999;
+  border: 1px solid lightgray;
+  font-size: 1rem;
+  height: 3rem;
+  padding-left: 0.5rem;
 }
-form input:focus{
-  padding: 0 14px;
-  border: 2px solid #675AFE;
-}
-form .drop-list{
+
+.dropdown{
   display: flex;
-  margin-top: 20px;
-  align-items: center;
   justify-content: space-between;
-}
-.drop-list .select-box{
-  display: flex;
-  width: 115px;
-  height: 45px;
   align-items: center;
-  border-radius: 5px;
+  margin-top: 2rem;
+}
+
+.dropdown i{
+  font-size : 1.5rem;
+  margin: 10;}
+
+.select-container img{
+  max-width: 2rem;
+}
+
+.select-container{
+  display: flex;
   justify-content: center;
-  border: 1px solid #999;
+  align-items: center;
+  border-radius: 0.5rem;
+  width: 6rem;
+  border: 1px solid lightgray;
 }
-.select-box img{
-  max-width: 21px;
+
+.dropdown i{
+  font-size: 1rem;
+  margin: 1.3rem 1.5rem 0 1.5rem;
 }
-.select-box select{
+
+.select-container select{
+  font-size: 1rem;
   width: auto;
-  font-size: 16px;
-  background: none;
-  margin: 0 -5px 0 5px;
 }
-.select-box select::-webkit-scrollbar{
-  width: 8px;
+
+.msg{
+  margin: 2rem 0 2rem 0;
 }
-.select-box select::-webkit-scrollbar-track{
-  background: #fff;
-}
-.select-box select::-webkit-scrollbar-thumb{
-  background: #888;
-  border-radius: 8px;
-  border-right: 2px solid #ffffff;
-}
-.drop-list .icon{
-  cursor: pointer;
-  margin-top: 30px;
-  font-size: 22px;
-}
-form .exchange-rate{
-  font-size: 17px;
-  margin: 20px 0 30px;
-}
+
 form button{
-  height: 52px;
-  color: #fff;
-  font-size: 17px;
+  height: 3rem;
+  background-color: #02567c;
+  color: white;
+  font-size: 1rem;
   cursor: pointer;
-  background: #675AFE;
-  transition: 0.3s ease;
 }
+
 form button:hover{
-  background: #4534fe;
-}
+  background-color: #20c6f0;
+  transition: 1s;
+} 
